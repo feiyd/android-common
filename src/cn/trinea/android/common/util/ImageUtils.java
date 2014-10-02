@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URLConnection;
 import java.net.URL;
 import java.util.Map;
 
@@ -134,10 +135,12 @@ public class ImageUtils {
         InputStream stream = null;
         try {
             URL url = new URL(imageUrl);
-            HttpURLConnection con = (HttpURLConnection)url.openConnection();
-            HttpUtils.setURLConnection(requestProperties, con);
-            if (readTimeOutMillis > 0) {
-                con.setReadTimeout(readTimeOutMillis);
+            URLConnection con = url.openConnection();
+            if( con instanceof HttpURLConnection){
+                HttpUtils.setURLConnection(requestProperties, (HttpURLConnection)con);
+                if (readTimeOutMillis > 0) {
+                    ((HttpURLConnection)con).setReadTimeout(readTimeOutMillis);
+                }
             }
             stream = con.getInputStream();
         } catch (MalformedURLException e) {

@@ -2,6 +2,7 @@
 # *.apk
 *.ap_
 
+target/
 # files for the dex VM
 *.dex
 
